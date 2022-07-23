@@ -6,8 +6,7 @@
 - Full authentication : Register-Login-Logout.
 - Create-Read-Update-Delete.
 - Django templating language-HTML-CSS
-
-### Deployed with Heroku --> [https://www.youtube.com/watch?v=XZoTukqekzY&ab_channel=CodeWithTomi](https://www.youtube.com/watch?v=XZoTukqekzY&ab_channel=CodeWithTomi)
+- [Deployed with Heroku](https://www.youtube.com/watch?v=XZoTukqekzY&ab_channel=CodeWithTomi)
 
 ## Deployed Link --> [https://todolistbydiala.herokuapp.com/](https://todolistbydiala.herokuapp.com/)
 
@@ -37,6 +36,14 @@ from django.urls import reverse_lazy
 redirect_authenticated_user = True
 ```
 
+- Login and regestration views need customized templates
+- 
+```
+template_name = "app/login.html"
+
+template_name = 'app/register.html'
+```
+
 - when deploying, should migrate by heroku after flushing the database,, run:
 
 ```
@@ -45,3 +52,51 @@ python manage.py flush
 heroku run python manage.py migrate
 ```
 
+
+## Authentication classes
+
+- Login
+```
+class MyLoginView(LoginView):
+    template_name = "app/login.html"
+    fields = "__all__"
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('tasks')
+```
+
+- Registration
+```
+class RegisterPage(FormView):
+    template_name = 'app/register.html'
+    form_class = UserCreationForm
+    redirect_authenticated_user = True
+    success_url = "/"
+
+    def form_valid(self, form):
+        user = form.save()
+        if user is not None:
+            login(self.request, user)
+        return super(RegisterPage, self).form_valid(form)
+
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect("tasks")
+        return super(RegisterPage, self).get(*args, **kwargs)
+```
+
+
+## Authenication urls
+
+- Logout does not need a specific view class.
+
+```
+from django.contrib.auth.views import LogoutView
+
+    path('login/', MyLoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(next_page="login"), name="logout"),
+    
+    path('register/', RegisterPage.as_view(), name='register'),
+    
+```
