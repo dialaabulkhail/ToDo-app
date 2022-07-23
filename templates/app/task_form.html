@@ -1,0 +1,27 @@
+{% extends 'app/_base.html' %}
+
+{% block content %}
+
+
+<div style=" padding: 10px;
+background-color: rgba(255, 255, 255, 0.459);
+justify-content: space-between;
+display: flex;
+border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+border-bottom-left-radius: 15px 255px;
+border-bottom-right-radius: 225px 15px;
+border-top-left-radius: 255px 15px;
+border-top-right-radius: 15px 225px;"><a style="color:white" href="{% url 'tasks' %}">Go Back</a></div>
+
+
+<h2>Create or update your task!</h2>
+<hr>
+<form action="" method="POST">
+
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Create!"/>
+</form>
+
+
+{% endblock content %}

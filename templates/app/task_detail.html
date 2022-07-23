@@ -1,0 +1,51 @@
+{% extends 'app/_base.html' %}
+
+{% block content %}
+
+<div style=" padding: 10px;
+background-color: rgba(255, 255, 255, 0.459);
+justify-content: space-between;
+display: flex;
+border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+border-bottom-left-radius: 15px 255px;
+border-bottom-right-radius: 225px 15px;
+border-top-left-radius: 255px 15px;
+border-top-right-radius: 15px 225px;"><a style="color:white" href="{% url 'tasks' %}">Go Back</a></div>
+
+
+<h1>{{task.title}}</h1>
+<hr>
+<p>{{task.description}}</p>
+<p>Task was created on: {{task.created}}</p>
+
+<hr>
+<div style="justify-content: space-between; padding:10px">
+    <a class="delete" href="{% url 'delete'  pk=task.pk %}">Delete Task</a>
+
+    <a class="update" href="{% url 'update'  pk=task.pk %}">Update Task</a>
+</div>
+
+
+<style>
+    .delete{
+        padding-right:5px 
+
+    }
+
+    .delete:hover {
+        color: white
+    }
+
+    .update{
+        padding-right:5px 
+
+    }
+
+    .update:hover {
+        color: white
+    }
+</style>
+
+
+
+{% endblock content %}
